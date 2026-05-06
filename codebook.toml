@@ -1,0 +1,6 @@
+words = [
+    "alsamixer",
+    "bincode",
+    "serde",
+    "walkdir",
+]
