@@ -1,7 +1,7 @@
 [
     {
-        "label": "Run debug",
-        "command": "cargo run",
+        "label": "Run dev",
+        "command": "cargo watch -x run -w src",
         "reveal": "no_focus",
     },
     {
