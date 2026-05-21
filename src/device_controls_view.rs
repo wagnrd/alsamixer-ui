@@ -1,4 +1,3 @@
-use relm4::adw::prelude::*;
 use relm4::prelude::*;
 
 use crate::widget_ext::{ApplyExt, BoxChildExt, SidebarChildExt};
@@ -35,12 +34,34 @@ impl SimpleComponent for DeviceControlsView {
         _sender: ComponentSender<Self>,
     ) -> ComponentParts<Self> {
         root.set_sidebar(Some(&adw::NavigationPage::new(
-            &adw::Sidebar::new().child(adw::SidebarSection::new().apply(|section| {
-                args.devices.iter().for_each(|device| {
-                    section.append(adw::SidebarItem::builder().title(device).build());
-                });
-            })),
+            &adw::ToolbarView::builder().build().apply(|toolbar| {
+                toolbar.add_top_bar(&adw::HeaderBar::new());
+                toolbar.set_content(Some(
+                    &adw::Sidebar::new().child(adw::SidebarSection::new().apply(|section| {
+                        args.devices.iter().for_each(|device| {
+                            section.append(adw::SidebarItem::builder().title(device).build());
+                        });
+                    })),
+                ));
+            }),
             "Sidebar",
+        )));
+
+        root.set_content(Some(&adw::NavigationPage::new(
+            &adw::ToolbarView::builder().build().apply(|toolbar| {
+                toolbar.add_top_bar(
+                    &adw::HeaderBar::builder()
+                        .centering_policy(adw::CenteringPolicy::Strict)
+                        .title_widget(&gtk::Label::new(Some("Device Controls")))
+                        .build(),
+                );
+                toolbar.set_content(Some(
+                    &gtk::Box::builder()
+                        .orientation(gtk::Orientation::Vertical)
+                        .build(),
+                ));
+            }),
+            "Content",
         )));
 
         ComponentParts {
@@ -53,5 +74,5 @@ impl SimpleComponent for DeviceControlsView {
 
     fn update(&mut self, _msg: Self::Input, _sender: ComponentSender<Self>) -> Self::Output {}
 
-    fn update_view(&self, widgets: &mut Self::Widgets, _sender: ComponentSender<Self>) {}
+    fn update_view(&self, _widgets: &mut Self::Widgets, _sender: ComponentSender<Self>) {}
 }

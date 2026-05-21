@@ -5,7 +5,6 @@ use relm4::prelude::*;
 
 use crate::device_controls_view::{DeviceControlsInit, DeviceControlsView};
 use crate::shortcuts::register_shortcuts;
-use crate::widget_ext::*;
 
 pub struct App;
 
@@ -35,22 +34,16 @@ impl SimpleComponent for App {
         register_shortcuts(&root);
 
         root.set_content(Some(
-            &gtk::Box::builder()
-                .orientation(gtk::Orientation::Vertical)
-                .build()
-                .child(&adw::HeaderBar::builder().build())
-                .child(
-                    DeviceControlsView::builder()
-                        .launch(DeviceControlsInit {
-                            devices: vec![
-                                String::from("Test"),
-                                String::from("Test 2"),
-                                String::from("Test 3"),
-                            ],
-                        })
-                        .forward(sender.input_sender(), identity)
-                        .widget(),
-                ),
+            DeviceControlsView::builder()
+                .launch(DeviceControlsInit {
+                    devices: vec![
+                        String::from("Test"),
+                        String::from("Test 2"),
+                        String::from("Test 3"),
+                    ],
+                })
+                .forward(sender.input_sender(), identity)
+                .widget(),
         ));
 
         ComponentParts {
